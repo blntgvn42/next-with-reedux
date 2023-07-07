@@ -17,7 +17,6 @@ export default function RootLayout({
         <Providers>
           <main className='max-w-3xl mx-auto'>
             {children}
-            <img></img>
           </main>
         </Providers>
       </body>

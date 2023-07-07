@@ -71,6 +71,12 @@ export default function Home() {
         ? <button onClick={() => signIn()}>Sign in</button>
         : <button onClick={() => signOut()}>Sign out</button>
       }
+      {sessions && (
+        <pre>
+          {JSON.stringify(sessions, null, 2)}
+        </pre>
+      )
+      }
       <Combobox as="div" value={selectedCountry} onChange={setSelectedCountry}>
         {/* <Combobox.Label className="block text-sm font-medium leading-6 text-gray-900">Assigned to</Combobox.Label> */}
         <div className="relative mt-2">
