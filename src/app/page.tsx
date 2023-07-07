@@ -8,17 +8,29 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/solid'
 import clsx from 'clsx'
 import { NumericFormat } from 'react-number-format'
 import Image from 'next/image'
+import { useSession } from 'next-auth/react'
+import { redirect } from 'next/navigation'
 
 
 export default function Home() {
   const { countries } = useAppSelector((state) => state.countryReducer);
   const dispatch = useAppDispatch();
+  const { data: sessions } = useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect('/api/auth/signin?callbackUrl=/')
+    },
+  })
+
+  console.log(sessions)
 
   const [query, setQuery] = useState('')
   const [selectedCountry, setSelectedCountry] = useState(null)
   const [countryDetails, setCountryDetails] = useState<any>(null)
-  const [password, setPassword] = useState('')
 
+  useEffect(() => {
+
+  }, [])
 
   useEffect(() => {
     const getCountries = async () => {
@@ -114,6 +126,9 @@ export default function Home() {
         </div>
       </Combobox>
       <hr />
+      <div className='w-50 h-50 bg-amber-300'>
+
+      </div>
       {countryDetails && (
         <div className="bg-white pb-16 pt-24 sm:pb-24 sm:pt-32 xl:pb-32">
           <div className="bg-gray-900 pb-20 sm:pb-24 xl:pb-0">
@@ -154,7 +169,7 @@ export default function Home() {
                   </svg>
                   <blockquote className="text-xl font-semibold leading-8 text-white sm:text-2xl sm:leading-9">
                     <p>
-                      {countryDetails.name.common} is a country in {countryDetails.region} with a population of <NumericFormat value={countryDetails.population} thousandSeparator="," displayType='text' />.
+                      {countryDetails.name.common} is a country in {countryDetails.region} with a <span className='text-yellow-500 dark:text-amber-500'>population</span> of <NumericFormat value={countryDetails.population} thousandSeparator="," displayType='text' />.
                       Its capital is {countryDetails.capital[0]}.
                       {countryDetails.borders && (
                         <>
