@@ -1,36 +1,24 @@
 "use client"
-import { useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { setCountries } from '@/redux/features/countrySlice'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { Country } from '@/types'
 import { Combobox } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/solid'
 import clsx from 'clsx'
-import { NumericFormat } from 'react-number-format'
+import { signIn, signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
-import { useSession } from 'next-auth/react'
-import { redirect } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { NumericFormat } from 'react-number-format'
 
 
 export default function Home() {
   const { countries } = useAppSelector((state) => state.countryReducer);
   const dispatch = useAppDispatch();
-  const { data: sessions } = useSession({
-    required: true,
-    onUnauthenticated() {
-      redirect('/api/auth/signin?callbackUrl=/')
-    },
-  })
-
-  console.log(sessions)
+  const { data: sessions } = useSession()
 
   const [query, setQuery] = useState('')
   const [selectedCountry, setSelectedCountry] = useState(null)
   const [countryDetails, setCountryDetails] = useState<any>(null)
-
-  useEffect(() => {
-
-  }, [])
 
   useEffect(() => {
     const getCountries = async () => {
@@ -79,6 +67,10 @@ export default function Home() {
 
   return (
     <>
+      {sessions === null
+        ? <button onClick={() => signIn()}>Sign in</button>
+        : <button onClick={() => signOut()}>Sign out</button>
+      }
       <Combobox as="div" value={selectedCountry} onChange={setSelectedCountry}>
         {/* <Combobox.Label className="block text-sm font-medium leading-6 text-gray-900">Assigned to</Combobox.Label> */}
         <div className="relative mt-2">
