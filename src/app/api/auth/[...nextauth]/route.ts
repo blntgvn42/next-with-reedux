@@ -1,12 +1,6 @@
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-type User = {
-    id: string;
-    name: string;
-    password: string;
-};
-
 const handler = NextAuth({
     providers: [
         CredentialsProvider({
@@ -25,7 +19,7 @@ const handler = NextAuth({
                 }
             },
             async authorize(credentials) {
-                const user: User = { id: "42", name: "bulent", password: "guven" }
+                const user = { id: "42", name: "bulent", password: "guven" }
 
                 if (credentials?.username === user.name && credentials?.password === user.password) {
                     return user
@@ -35,6 +29,9 @@ const handler = NextAuth({
             }
         })
     ],
+    session: {
+        maxAge: 30 * 24 * 60 * 60, // 30 days
+    },
 });
 
 export { handler as GET, handler as POST }

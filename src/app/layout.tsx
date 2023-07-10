@@ -1,10 +1,10 @@
 "use client"
-import { Providers } from '@/redux/Provider'
-import './globals.css'
-import { Inter } from 'next/font/google'
+import { Providers } from '@/redux/Provider';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import NextNProgress from 'nextjs-progressbar';
 
 const inter = Inter({ subsets: ['latin'] })
-
 
 export default function RootLayout({
   children,
@@ -16,6 +16,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <main className='max-w-3xl mx-auto'>
+            <NextNProgress />
             {children}
           </main>
         </Providers>
